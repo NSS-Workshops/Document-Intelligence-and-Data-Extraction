@@ -19,12 +19,13 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     # Skip deployment if this is the template repository
-    if: github.event.repository.name != 'curriculum-site-template'
-    
+    env:
+      REQUIRES_AUTH: ${{ secrets.REQUIRES_AUTHENTICATION }}
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
@@ -37,32 +38,30 @@ jobs:
       run: |
           echo "VITE_OAUTH_CLIENT_ID=${{ secrets.OAUTH_CLIENT_ID }}" > .env
           echo "VITE_OAUTH_CLIENT_SECRET=${{ secrets.OAUTH_CLIENT_SECRET }}" >> .env
-          echo "VITE_PROXY_DOMAIN=https://authproxy.nss.team" >> .env
+          echo "VITE_PROXY_DOMAIN=${{ secrets.VITE_PROXY_DOMAIN }}" >> .env
           echo "VITE_LEARNING_PLATFORM_API=https://learningapi.nss.team" >> .env
+          echo "VITE_COURSE_NAME=${{ secrets.WORKSHOP_NAME }}" >> .env
+          echo "BASE_URL=${{ secrets.WORKSHOP_BASE_URL }}" >> .env
+          echo "VITE_GLOBAL_PROGRESS_BAR=${{ secrets.WORKSHOP_GLOBAL_PROGRESS_BAR }}" >> .env
+          echo "VITE_REQUIRES_GITHUB_AUTHENTICATION=${{ env.REQUIRES_AUTH == 'true' }}" >> .env
     - name: Install dependencies
       run: npm ci
-    
-    - name: Check if doAuth is enabled
-      id: check-auth
-      run: |
-        if grep -q "doAuth: true" src/config.js; then
-          echo "auth_enabled=true" >> $GITHUB_OUTPUT
-        else
-          echo "auth_enabled=false" >> $GITHUB_OUTPUT
-        fi
-    
+
     - name: Build with OAuth variables (if auth enabled)
-      if: steps.check-auth.outputs.auth_enabled == 'true'
+      if: env.REQUIRES_AUTH == 'true'
       run: npm run build
       env:
-        VITE_OAUTH_CLIENT_ID: ${{ secrets.VITE_OAUTH_CLIENT_ID }}
-        VITE_OAUTH_CLIENT_SECRET: ${{ secrets.VITE_OAUTH_CLIENT_SECRET }}
+        NODE_ENV: production
+        VITE_OAUTH_CLIENT_ID: ${{ secrets.OAUTH_CLIENT_ID }}
+        VITE_OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
         VITE_PROXY_DOMAIN: ${{ secrets.VITE_PROXY_DOMAIN }}
-    
+
     - name: Build without OAuth variables (if auth disabled)
-      if: steps.check-auth.outputs.auth_enabled == 'false'
+      if: env.REQUIRES_AUTH == 'false'
       run: npm run build
-    
+      env:
+        NODE_ENV: production
+
     - name: Setup Pages
       uses: actions/configure-pages@v4
 
@@ -82,7 +81,7 @@ jobs:
       with:
         status: ${{ job.status }}
         fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-        text: "Cloud Course deployment ${{ job.status }}"
+        text: "${{ secrets.WORKSHOP_NAME }} workshop deployment ${{ job.status }}"
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       if: always()
