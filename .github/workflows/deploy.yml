@@ -19,6 +19,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     # Skip deployment if this is the template repository
+    if: github.event.repository.name != 'curriculum-site-template'
     env:
       REQUIRES_AUTH: ${{ secrets.REQUIRES_AUTHENTICATION }}
 
