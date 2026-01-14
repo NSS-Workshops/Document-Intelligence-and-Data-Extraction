@@ -20,7 +20,12 @@ export default defineConfig(({ mode }) => {
 
   let courseName = env.VITE_COURSE_NAME || 'Default name';
   let doAuth = env.VITE_REQUIRES_GITHUB_AUTHENTICATION === 'true';
-  let baseUrl = env.BASE_URL || courseName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  let baseUrl = env.BASE_URL; 
+  
+  console.log("Base URL:", baseUrl);
+  console.log("Course Name:", courseName);
+  console.log("Requires Auth:", doAuth);  
+
 
   // Custom plugin to replace placeholders in HTML
   const htmlReplacementPlugin = {
