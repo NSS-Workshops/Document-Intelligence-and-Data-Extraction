@@ -1,49 +1,26 @@
 /* eslint-disable no-undef */
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
-import fs from 'fs'
 import path from 'path'
 
 import { normalizePath } from 'vite'
+import { glob } from 'glob'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path' 
 import { viteStaticCopy } from 'vite-plugin-static-copy'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 export default defineConfig(({ mode }) => {
   // Load env variables based on mode for server access
   // Using empty string as prefix to load all env vars, including those without VITE_ prefix
+  // Read config.js to get courseName and doAuth
   const env = loadEnv(mode, process.cwd(), '');
 
-  // Read config.js to get courseName and doAuth
-  let courseName = 'Course Name'; // fallback
-  let courseUrl = 'course-name'; // fallback
-  let doAuth = false; // fallback
-  
-  try {
-    const configPath = path.resolve(process.cwd(), 'src/config.js');
-    const configContent = fs.readFileSync(configPath, 'utf-8');
-    
-    const courseNameMatch = configContent.match(/courseName:\s*["']([^"']+)["']/);
-    if (courseNameMatch) {
-      courseName = courseNameMatch[1];
-      // Transform courseName to URL-friendly format
-      courseUrl = courseName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-    }
-    
-    const doAuthMatch = configContent.match(/doAuth:\s*(true|false)/);
-    if (doAuthMatch) {
-      doAuth = doAuthMatch[1] === 'true';
-    }
-  } catch (error) {
-    console.warn('Could not read config.js, using fallback values');
-  }
-
-  console.log('OAuth env variables loaded:', {
-    lmsDomain: env.VITE_LEARNING_PLATFORM_API ? 'Present' : 'Missing',
-  });
-
-  // Determine base path for deployment
-  // If BASE_URL is provided (e.g., by GitHub Actions), use it. Otherwise, use courseUrl.
-  // This is crucial for PR previews where assets are hosted under a /pr-XX/ path.
-  const deployBasePath = env.BASE_URL ? `/${env.BASE_URL}/` : `/${courseUrl}/`;
+  let courseName = env.VITE_COURSE_NAME || 'Default name';
+  let doAuth = env.VITE_REQUIRES_GITHUB_AUTHENTICATION === 'true';
+  let baseUrl = env.BASE_URL || courseName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
 
   // Custom plugin to replace placeholders in HTML
   const htmlReplacementPlugin = {
@@ -51,32 +28,45 @@ export default defineConfig(({ mode }) => {
     transformIndexHtml(html) {
       return html
         .replace(/%COURSE_NAME%/g, courseName)
-        .replace(/%COURSE_URL%/g, courseUrl);
+        .replace(/%COURSE_URL%/g, baseUrl);
     }
   };
 
-  return {
-    base: deployBasePath,
-    plugins: [
-      react({
-        jsxImportSource: '@emotion/react',
-        babel: {
-          plugins: ['@emotion/babel-plugin']
-        }
-      }),
-      htmlReplacementPlugin,
+  // Check if any image files exist before adding the smart copy plugin
+  const imagePattern = path.resolve(__dirname, 'src/sections/**/*.{png,jpg,jpeg,svg,gif,webp,avif,mp3,mp4,pdf,m4a}');
+  const imageFiles = glob.sync(normalizePath(imagePattern));
+  const hasImages = imageFiles.length > 0;
+
+  const plugins = [
+    react({
+      jsxImportSource: '@emotion/react',
+      babel: {
+        plugins: ['@emotion/babel-plugin']
+      }
+    }),
+    htmlReplacementPlugin
+  ];
+
+  // Seems like an infinite loop when npm run dev, commented out
+  // Only add smart copy plugin if images exist
+  if (hasImages) {
+    plugins.push(
       viteStaticCopy({
         targets: [
           {
             // copy all images from each chapter folder
-            // eslint-disable-next-line no-undef
-            src: normalizePath(path.resolve(__dirname, 'src/chapters/**/*.{png,jpg,jpeg,svg,gif,webp,avif}')),
+            src: normalizePath(imagePattern),
             dest: 'assets',
             flatten: false
           }
         ]
       })
-    ],
+    );
+  }
+
+  return {
+    base: `/${baseUrl}/`,
+    plugins,
     // Make env variables available to client-side code (only if authentication is enabled)
     ...(doAuth && {
       define: {
@@ -85,18 +75,5 @@ export default defineConfig(({ mode }) => {
         'process.env.VITE_LEARNING_PLATFORM_API': JSON.stringify(env.VITE_LEARNING_PLATFORM_API),
       },
     }),
-    // Environment Variables:
-    // Vite automatically loads env files in the following order:
-    // 1. .env                # loaded in all cases
-    // 2. .env.local         # loaded in all cases, ignored by git
-    // 3. .env.[mode]        # only loaded in specified mode
-    // 4. .env.[mode].local  # only loaded in specified mode, ignored by git
-    //
-    // Only variables prefixed with VITE_ are exposed to your code
-    // via import.meta.env.VITE_*
-    //
-    // Example:
-    // VITE_OAUTH_CLIENT_ID in .env.local becomes available as
-    // import.meta.env.VITE_OAUTH_CLIENT_ID in your code
   }
 })
