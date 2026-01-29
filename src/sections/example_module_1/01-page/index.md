@@ -14,8 +14,6 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere consectetur
 - Curabitur blandit tempus porttitor  
 - Nullam quis risus eget urna mollis ornare  
 
-<img width=700 src="./assets/vue.svg"/>
-
 ---
 
 ## 🧭 Section 2: Magna Fermentum Venenatis
@@ -32,9 +30,6 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam id dolor id nibh
 
 > Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
 
-<img width=500 src="./assets/html5.png"/>
-
----
 
 ## 🖼️ Image Example
 
