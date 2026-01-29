@@ -14,8 +14,6 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae elit libero
 - Cras mattis consectetur purus  
 - Sed posuere consectetur est  
 
-<img width=700 src="./assets/angular.svg"/>
-
 ---
 
 ## 🧭 Section 2: Purus Sit Amet Fermentum
@@ -32,9 +30,6 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla
 
 > Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
 
-<img width=500 src="./assets/ts_logo.png"/>
-
----
 
 ## 🖼️ Image Example
 

@@ -14,8 +14,6 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper nulla
 - Maecenas faucibus mollis interdum  
 - Cras justo odio, dapibus ac facilisis  
 
-<img width=700 src="./assets/svelte.svg"/>
-
 ---
 
 ## 🧭 Section 2: Donec Id Elit
@@ -31,8 +29,6 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur blandit tempu
 [![Lorem YouTube Video](https://img.youtube.com/vi/ktvTqknDobU/hqdefault.jpg)](https://www.youtube.com/watch?v=ktvTqknDobU)
 
 > Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere consectetur est at lobortis.
-
-<img width=500 src="./assets/css_grid.png"/>
 
 ---
 

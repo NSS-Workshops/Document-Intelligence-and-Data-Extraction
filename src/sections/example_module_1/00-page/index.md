@@ -16,7 +16,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Aenean 
 - Consectetur adipiscing elit  
 - Sed do eiusmod tempor incididunt  
 
-<img width=700 src="./assets/react.svg"/>
+<img width=700 src="./react.svg"/>
 ---
 
 ## 🧭 Section 2: Sed Do Eiusmod Tempor
@@ -33,7 +33,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sit amet ips
 
 > Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.
 
-<img width=500 src="./assets/js_mem.png"/>
+<img width=500 src="./js_mem.png"/>
 ---
 
 ## 🖼️ Image Example
