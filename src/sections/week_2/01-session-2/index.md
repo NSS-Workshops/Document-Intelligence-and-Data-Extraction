@@ -68,6 +68,19 @@ Machine Learning systems work differently. Instead of developers writing detaile
 
 Because we do not manually program the rules, it is much harder to trace why certain outputs are created. These systems are probabilistic. Probabilistic systems may produce slightly different outputs even when given the same input multiple times.
 
+```mermaid
+flowchart LR
+    A["OCR text from invoice<br/>'Invoice Total: $1250.00'"]
+        --> B["Probabilistic Model output"]
+
+    B --> C["Output (Run #1)<br/>{ total: 1250.00 }"]
+    B --> D["Output (Run #2)<br/>{ invoice_total: 1250.00 }"]
+    B --> E["Output (Run #3)<br/>{ amount_due: 1250.00 }"]
+```
+
+
+
+
 | System Type        | Pros                                                                 | Cons                                                                 |
 |--------------------|----------------------------------------------------------------------|----------------------------------------------------------------------|
 | Deterministic      | Predictable behavior; we know exactly what will happen.            | Brittle; if the invoice format changes, the extraction code may break. |
