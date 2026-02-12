@@ -66,6 +66,9 @@ We can be certain that if the `room_temperature` variable is set to `80`, the pr
 
 Machine Learning systems work differently. Instead of developers writing detailed rules, they provide examples of input data along with the desired outputs. The system analyzes those examples and learns patterns that connect inputs to outputs. The learned logic is not written directly by developers but encoded inside the model.
 
+<iframe width="1120" height="630" src="https://www.youtube.com/embed/PeMlggyqz0Y?si=l5lrO53t_dy42xRb" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+
 Because we do not manually program the rules, it is much harder to trace why certain outputs are created. These systems are probabilistic. Probabilistic systems may produce slightly different outputs even when given the same input multiple times.
 
 ```mermaid
@@ -92,6 +95,8 @@ flowchart LR
 A Large Language Model (LLM) is a Machine Learning system trained on large amounts of text. Its core task is simple: given a sequence of text, probabilistically predict the next token. A token is a small piece of text, such as a word, part of a word.
 
 The model predicts one token at a time, adds it to the sequence, and repeats the process to generate a full response. Although this task seems simple, predicting the next token requires capturing patterns in grammar, structure, formatting, and context. The model does not understand text like a human; it generates output by applying learned probabilistic patterns across the text it was trained on.
+
+<iframe  width="1120" height="630"  src="https://www.youtube.com/embed/5sLYAQS9sWQ?si=S6opKJg22_EqC63p" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## How does an LLM actually make sense of unstructured invoice text?
 When we give the model text that came from an invoice image (after OCR has converted the image to text), it does not “read” the invoice the way a human does. Instead, it looks at the text and predicts what structured information should come next based on familiar patterns. For example, if it sees “Invoice Total” followed by a number, it can infer that the number is the total amount. By continuing this pattern recognition, it can reorganize messy OCR text into structured output, such as clearly labeled fields in JSON.
