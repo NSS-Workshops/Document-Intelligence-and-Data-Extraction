@@ -98,5 +98,57 @@ The model predicts one token at a time, adds it to the sequence, and repeats the
 
 <iframe  width="1120" height="630"  src="https://www.youtube.com/embed/5sLYAQS9sWQ?si=S6opKJg22_EqC63p" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
+## What is a Prompt?
+The **prompt** is the instruction you give the language model. It tells the model what you want it to do.  
+Example: "Extract the invoice number and total amount and return valid JSON."
+
+
+## What is Prompt Engineering?
+**Prompt engineering** is the practice of carefully writing and refining prompts to get better results from a model.  
+Small wording changes can significantly improve accuracy and structure.
+
+
+## What is a LLM (Large Language Model)?
+An **LLM** is a machine learning model trained on massive amounts of text to predict the next word in a sequence.  
+It doesn't "understand" like a human - it predicts text based on patterns it learned during training.
+
+## What is a Local LLM?
+A **local LLM** runs independently from a commercial API service.  
+This gives you more transparency and control over the model, but you are typically limited to smaller, 
+less powerful models.
+Smaller local models may struggle with complex reasoning, long documents, or consistent structured output.  
+In the next session, we'll use an **LLM API**, which provides access to much larger, state-of-the-art models hosted in the cloud. These models are generally more accurate and reliable for structured extraction - but they introduce usage costs and external dependencies.
+
+## What is Model Training?
+**Model training** is the process of teaching a model by exposing it to large amounts of data.  
+During training, the model adjusts millions or billions of internal weights (parameters) to improve its ability to predict the next word in a sequence.
+
+Once training is complete, the model's knowledge is fixed - when we use it in our notebook, we are not training it, we are only running inference.
+
+## What is Inference?
+**Inference** is the process of using a trained model to generate predictions or outputs.  
+When you send a prompt to the model and receive JSON back, that's inference.
+
+## What are Parameters?
+**Parameters** are settings that control how the model generates text.  
+They influence randomness, creativity, and output style.
+
+## What is the Temperature parameter?
+**Temperature** controls how random the model's output is.
+
+- Low temperature (e.g., 0.1) → More predictable and consistent  
+- High temperature (e.g., 0.8) → More creative but less reliable  
+
+For structured data extraction, lower temperature usually works better.
+
 ## How does an LLM actually make sense of unstructured invoice text?
-When we give the model text that came from an invoice image (after OCR has converted the image to text), it does not “read” the invoice the way a human does. Instead, it looks at the text and predicts what structured information should come next based on familiar patterns. For example, if it sees “Invoice Total” followed by a number, it can infer that the number is the total amount. By continuing this pattern recognition, it can reorganize messy OCR text into structured output, such as clearly labeled fields in JSON.
+When we give the model text that came from an invoice image (after OCR has converted the image to text), it does not "read" the invoice the way a human does. Instead, it looks at the text and predicts what structured information should come next based on familiar patterns. For example, if it sees "Invoice Total" followed by a number, it can infer that the number is the total amount. By continuing this pattern recognition, it can reorganize messy OCR text into structured output, such as clearly labeled fields in JSON.
+
+# LLM Extraction Walkthrough (Interactive Notebook – Includes Exercises)
+
+This interactive notebook demonstrates how to use a local LLM (Phi-3.5-mini) to extract structured data from invoice images. You'll learn prompt engineering, model inference parameters, JSON parsing, and complete hands-on exercises to experiment with temperature settings and process different invoices in your own extraction pipeline.
+
+
+<a href="https://colab.research.google.com/github/NSS-Workshops/Document-Intelligence-and-Data-Extraction/blob/main/src/sections/week_2/01-session-2/llm_extraction_walkthrough.ipynb" target="_blank">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab">
+</a>

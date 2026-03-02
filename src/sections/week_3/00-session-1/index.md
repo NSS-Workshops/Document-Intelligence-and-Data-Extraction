@@ -18,7 +18,7 @@ Detects invalid output
 Re-prompts or re-runs the model
 Encourage students to reason about failure modes
 
-### Pydantic Validation Tutorial (Interactive Notebook – Includes Exercises)
+# Pydantic Validation Tutorial (Interactive Notebook – Includes Exercises)
 
 This interactive Colab notebook teaches you how to use Pydantic to validate model-generated JSON in document intelligence systems. You’ll define schemas, validate invoice data, handle errors, and complete hands-on exercises to apply validation in your own extraction pipeline.
 
