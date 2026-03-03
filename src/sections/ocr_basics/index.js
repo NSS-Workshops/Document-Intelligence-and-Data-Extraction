@@ -3,7 +3,7 @@
 */
 
 // Import all chapter packages
-const chapterModules = import.meta.glob('./*/index.js', { eager: true })
+const chapterModules = import.meta.glob('./*/index.{js,jsx}', { eager: true })
 
 // Section configuration
 const config = {
